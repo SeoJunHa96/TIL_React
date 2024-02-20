@@ -164,3 +164,97 @@
   ```
 
   
+
+---
+
+- 반복
+
+  ```react
+  import { useState, useEffect } from "react";
+  
+  export default function App() {
+    const [count, setCounter] = useState(0);
+  
+    useEffect(() => {
+      console.log(`useEffect: ${Date()}`);
+    });
+  
+    const countHandler = (e) => {
+      setCounter((s) => s + 1);
+    };
+  
+    return (
+      <div className="App">
+        <h1 id="hi">{count}</h1>
+        <button onClick={countHandler}>카운터 증가</button>
+      </div>
+    );
+  }
+  ```
+
+  클릭 할 때마다 countHandler가 발생하면서 카운트 증가.
+
+
+
+- 처음에만 실행
+
+  ```react
+  import { useState, useEffect } from "react";
+  
+  export default function App() {
+    const [count, setCounter] = useState(0);
+  
+    useEffect(() => {
+      console.log(`useEffect: ${Date()}`);
+    }, []);
+  	// useEffect의 두 번째 인자에 빈 배열이 들어가 있기 때문에 콘솔 로그가 최초 실행 시에만 작동하고 실행 안됨
+    const countHandler = (e) => {
+      setCounter((s) => s + 1);
+    };
+  
+    return (
+      <div className="App">
+        <h1 id="hi">{count}</h1>
+        <button onClick={countHandler}>카운터 증가</button>
+      </div>
+    );
+  }
+  ```
+
+  
+
+- 의존성
+
+  ```react
+  import { useState, useEffect } from "react";
+  
+  export default function App() {
+    const [firstCount, setFirstCounter] = useState(0);
+    const [secondCount, setSecondCounter] = useState(0);
+  
+    useEffect(() => {
+      console.log(`useEffect: ${Date()}`);
+    }, [firstCount]);
+  // 인자에 firstCount가 들어가 있기 때문에 firstCount가 바뀔 때만 실행
+  // 즉 위의 카운터 증가1을 눌렀을 때만 콘솔 로그가 찍힌다.
+  // 정확히는, fisrtCount가 재렌더링된 후 실행되는 것.
+    const firstCountHandler = (e) => {
+      setFirstCounter((s) => s + 1);
+    };
+  
+    const secondCountHandler = (e) => {
+      setSecondCounter((s) => s + 1);
+    };
+  
+    return (
+      <div className="App">
+        <h1>{firstCount}</h1>
+        <button onClick={firstCountHandler}>카운터 증가1</button>
+        <h1 id="hi">{secondCount}</h1>
+        <button onClick={secondCountHandler}>카운터 증가2</button>
+      </div>
+    );
+  }
+  ```
+
+  
